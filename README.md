@@ -12,7 +12,7 @@
 
 ### 魔法粘贴
 
-从飞书、Notion、Word 甚至任意网页复制富文本，粘贴瞬间自动净化为纯净 Markdown。无需手写 Markdown 语法，粘贴即用。
+**从飞书、Notion、Word 甚至任意网页复制富文本**，粘贴瞬间自动净化为纯净 Markdown。无需手写 Markdown 语法，粘贴即用。
 
 ### 30 套高定样式
 
