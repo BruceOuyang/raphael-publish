@@ -230,7 +230,7 @@ export const classicThemes: Theme[] = [
     name: 'Retro',
     description: '做旧羊皮纸搭配火漆红，适合人文历史与艺术鉴赏',
     styles: {
-      container: 'max-width: 100%; margin: 0 auto; padding: 24px 20px 48px 20px; font-family: Georgia, "Times New Roman", Times, serif; font-size: 16px; line-height: 1.7 !important; color: #2b2621 !important; background-color: #f4ecd8 !important; word-wrap: break-word;',
+      container: 'max-width: 100%; margin: 0 auto; padding: 24px 20px 48px 20px; font-family: Georgia, "Times New Roman", Times, serif; font-size: 16px; line-height: 1.7 !important; color: #2b2621 !important; background-color: #f4ecd8 !important; background-image: radial-gradient(circle at center, #f4ecd8 0%, #ebdec4 100%); word-wrap: break-word;',
       h1: 'font-size: 36px; font-weight: 800; color: #2b2621 !important; line-height: 1.2 !important; margin: 38px 0 20px; letter-spacing: -0.02em; font-variant: small-caps;',
       h2: 'font-size: 26px; font-weight: 700; color: #8c2211 !important; line-height: 1.35 !important; margin: 32px 0 16px;',
       h3: 'font-size: 21px; font-weight: 600; color: #2b2621 !important; line-height: 1.4 !important; margin: 28px 0 14px;',
