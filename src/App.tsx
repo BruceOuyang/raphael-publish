@@ -98,14 +98,14 @@ export default function App() {
     };
 
     const deviceWidthClass = () => {
-        if (previewDevice === 'mobile') return 'w-[480px] max-w-full';
-        if (previewDevice === 'tablet') return 'w-[768px] max-w-full';
+        if (previewDevice === 'mobile') return 'w-[520px] max-w-full';
+        if (previewDevice === 'tablet') return 'w-[800px] max-w-full';
         return 'w-[840px] xl:w-[1024px] max-w-[95%]';
     };
 
     const gridLayoutClass = () => {
-        if (previewDevice === 'mobile') return 'md:grid-cols-[61.8fr_38.2fr]';
-        if (previewDevice === 'tablet') return 'md:grid-cols-[50fr_50fr]';
+        if (previewDevice === 'mobile') return 'md:grid-cols-[55fr_45fr]';
+        if (previewDevice === 'tablet') return 'md:grid-cols-[45fr_55fr]';
         return 'md:grid-cols-[38.2fr_61.8fr]';
     };
 

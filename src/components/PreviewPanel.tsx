@@ -19,7 +19,7 @@ export default function PreviewPanel({ renderedHtml, deviceWidthClass, previewDe
                         <div
                             ref={previewRef}
                             dangerouslySetInnerHTML={{ __html: renderedHtml }}
-                            className="preview-content min-w-full px-4 pt-4 pb-8 sm:px-6 md:pb-12"
+                            className={`preview-content min-w-full ${previewDevice === 'mobile' ? 'px-1 pt-1 pb-8' : 'px-2 pt-2 pb-10'}`}
                         />
                     </DeviceFrame>
                 ) : (

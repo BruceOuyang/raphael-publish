@@ -122,11 +122,11 @@
     }
 
     .preview-device-mobile {
-        width: 380px;
-        height: 780px;
+        width: 520px;
+        height: 1080px;
         flex-shrink: 0;
         border-radius: 56px;
-        padding: 16px;
+        padding: 12px;
     }
 
     .preview-device-tablet {
@@ -134,7 +134,7 @@
         height: 960px;
         flex-shrink: 0;
         border-radius: 40px;
-        padding: 20px;
+        padding: 16px;
     }
 
     /* Screen contains the background and boundary */
@@ -142,23 +142,20 @@
         @apply overflow-hidden relative;
         flex: 1;
         min-height: 0;
-        border-radius: 42px;
+        border-radius: 40px;
         background: #ffffff;
-        border: 4px solid #000;
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+        /* very subtle boundary instead of black border */
         pointer-events: auto;
-        /* Allow inner interaction */
     }
 
     .dark .preview-device-screen {
         background: #1c1c1e;
-        border-color: #000;
         box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
     }
 
     .preview-device-tablet .preview-device-screen {
-        border-radius: 22px;
-        border-width: 6px;
+        border-radius: 28px;
     }
 
     /* Inner scrolled area */
