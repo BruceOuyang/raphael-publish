@@ -1,0 +1,75 @@
+import { Copy, CheckCircle2, Download, Smartphone, Tablet, Monitor, Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+interface ToolbarProps {
+    previewDevice: 'mobile' | 'tablet' | 'pc';
+    onDeviceChange: (device: 'mobile' | 'tablet' | 'pc') => void;
+    onExportPdf: () => void;
+    onExportHtml: () => void;
+    onCopy: () => void;
+    copied: boolean;
+    isCopying: boolean;
+}
+
+export default function Toolbar({ previewDevice, onDeviceChange, onExportPdf, onExportHtml, onCopy, copied, isCopying }: ToolbarProps) {
+    return (
+        <div className="flex items-center justify-between px-6 py-3">
+            <div className="flex bg-[#00000008] dark:bg-[#ffffff10] p-1 rounded-full backdrop-blur-md">
+                <button
+                    onClick={() => onDeviceChange('mobile')}
+                    className={`p-2 rounded-full transition-all ${previewDevice === 'mobile' ? 'bg-white dark:bg-[#2c2c2e] shadow-sm' : 'text-[#86868b] dark:text-[#a1a1a6] hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7]'}`}
+                    title="手机视图 (480px)"
+                >
+                    <Smartphone size={16} />
+                </button>
+                <button
+                    onClick={() => onDeviceChange('tablet')}
+                    className={`p-2 rounded-full transition-all ${previewDevice === 'tablet' ? 'bg-white dark:bg-[#2c2c2e] shadow-sm' : 'text-[#86868b] dark:text-[#a1a1a6] hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7]'}`}
+                    title="平板视图 (768px)"
+                >
+                    <Tablet size={16} />
+                </button>
+                <button
+                    onClick={() => onDeviceChange('pc')}
+                    className={`p-2 rounded-full transition-all ${previewDevice === 'pc' ? 'bg-white dark:bg-[#2c2c2e] shadow-sm' : 'text-[#86868b] dark:text-[#a1a1a6] hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7]'}`}
+                    title="桌面视图 (PC)"
+                >
+                    <Monitor size={16} />
+                </button>
+            </div>
+
+            <div className="flex items-center gap-4">
+                <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={onExportPdf}
+                    className="apple-export-btn hidden sm:flex !bg-[#00000008] dark:!bg-[#ffffff10] border-transparent"
+                >
+                    <Download size={14} />
+                    导出 PDF
+                </motion.button>
+
+                <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={onExportHtml}
+                    className="apple-export-btn hidden lg:flex !bg-[#00000008] dark:!bg-[#ffffff10] border-transparent"
+                >
+                    <Download size={14} />
+                    导出 HTML
+                </motion.button>
+
+                <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={onCopy}
+                    disabled={isCopying}
+                    className={copied ? "apple-copy-btn-success apple-copy-btn" : isCopying ? "apple-copy-btn opacity-80 cursor-not-allowed" : "apple-copy-btn"}
+                >
+                    {copied ? <CheckCircle2 size={16} /> : isCopying ? <Loader2 className="animate-spin" size={16} /> : <Copy size={16} />}
+                    {copied ? '已复制！请贴往公众号' : isCopying ? '正在打包图片...' : '复制到公众号'}
+                </motion.button>
+            </div>
+        </div>
+    );
+}

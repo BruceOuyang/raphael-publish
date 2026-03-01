@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/defaultcontent.ts","./src/main.tsx","./src/lib/htmltomarkdown.ts","./src/lib/markdown.ts","./src/lib/themes.ts","./src/lib/wechatcompat.ts"],"version":"5.6.3"}
