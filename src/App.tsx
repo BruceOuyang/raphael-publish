@@ -208,6 +208,7 @@ export default function App() {
             {/* 移动端 Tab 切换 */}
             <div className="md:hidden glass-toolbar flex items-center z-[90]">
                 <button
+                    data-testid="tab-editor"
                     onClick={() => setActivePanel('editor')}
                     className={`flex-1 flex items-center justify-center gap-2 py-3 text-[13px] font-semibold transition-colors border-b-2 ${activePanel === 'editor' ? 'text-[#0066cc] dark:text-[#0a84ff] border-[#0066cc] dark:border-[#0a84ff]' : 'text-[#86868b] dark:text-[#a1a1a6] border-transparent'}`}
                 >
@@ -215,6 +216,7 @@ export default function App() {
                     编辑
                 </button>
                 <button
+                    data-testid="tab-preview"
                     onClick={() => setActivePanel('preview')}
                     className={`flex-1 flex items-center justify-center gap-2 py-3 text-[13px] font-semibold transition-colors border-b-2 ${activePanel === 'preview' ? 'text-[#0066cc] dark:text-[#0a84ff] border-[#0066cc] dark:border-[#0a84ff]' : 'text-[#86868b] dark:text-[#a1a1a6] border-transparent'}`}
                 >

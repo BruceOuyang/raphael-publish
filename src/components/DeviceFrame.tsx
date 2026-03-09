@@ -17,6 +17,7 @@ export default function DeviceFrame({ device, children, scrollRef, onScroll }: D
                 <div
                     ref={scrollRef}
                     onScroll={onScroll}
+                    data-testid="preview-inner-scroll"
                     className="preview-device-scroll no-scrollbar"
                 >
                     {children}
