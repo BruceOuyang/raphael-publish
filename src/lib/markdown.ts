@@ -3,8 +3,6 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import { THEMES } from './themes';
 
-const CODE_BLOCK_FONT_STACK = '"SF Mono", "Cascadia Code", "Fira Code", Consolas, Menlo, Monaco, monospace';
-
 export const md = new MarkdownIt({
     html: true,
     linkify: true,
@@ -200,7 +198,7 @@ export function applyTheme(html: string, themeId: string) {
         const currentStyle = pre.getAttribute('style') || '';
         pre.setAttribute(
             'style',
-            `${currentStyle}; font-family: ${CODE_BLOCK_FONT_STACK}; font-variant-ligatures: none; tab-size: 2;`
+            `${currentStyle}; font-variant-ligatures: none; tab-size: 2;`
         );
     });
 
@@ -208,7 +206,7 @@ export function applyTheme(html: string, themeId: string) {
         const currentStyle = codeNode.getAttribute('style') || '';
         codeNode.setAttribute(
             'style',
-            `${currentStyle}; display: block; font-family: ${CODE_BLOCK_FONT_STACK}; font-size: inherit !important; line-height: inherit !important; font-style: normal !important; white-space: pre; word-break: normal; overflow-wrap: normal;`
+            `${currentStyle}; display: block; font-size: inherit !important; line-height: inherit !important; font-style: normal !important; white-space: pre; word-break: normal; overflow-wrap: normal;`
         );
     });
 
