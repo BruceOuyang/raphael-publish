@@ -8,6 +8,9 @@ export const md = new MarkdownIt({
     linkify: true,
     typographer: false,
     highlight: function (str, lang) {
+        if (lang === 'mermaid') {
+            return `<div class="mermaid-pending" data-mermaid="${encodeURIComponent(str)}"></div>`;
+        }
         let codeContent = '';
         if (lang && hljs.getLanguage(lang)) {
             try {

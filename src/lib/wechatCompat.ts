@@ -12,6 +12,45 @@ export function cleanInternalAttributes(html: string): string {
     return stripIndexMarkers(html);
 }
 
+async function svgToPng(svg: SVGElement): Promise<string> {
+    // Clone and strip external resource references to prevent tainted canvas.
+    // Mermaid SVGs often embed @import / url(https://...) font rules which
+    // cause the browser to mark the canvas as cross-origin tainted.
+    const clone = svg.cloneNode(true) as SVGElement;
+    clone.querySelectorAll('style').forEach(s => {
+        s.textContent = (s.textContent || '')
+            .replace(/@import\s+[^;]+;/g, '')
+            .replace(/url\(['"]?https?:\/\/[^'")\s]+['"]?\)/g, 'none');
+    });
+
+    const width = svg.clientWidth || parseInt(svg.getAttribute('width') || '0') || 800;
+    const height = svg.clientHeight || parseInt(svg.getAttribute('height') || '0') || 600;
+    if (!clone.getAttribute('width')) clone.setAttribute('width', String(width));
+    if (!clone.getAttribute('height')) clone.setAttribute('height', String(height));
+
+    // Use a data URI (not a blob URL) — data URIs are always treated as same-origin
+    // so drawing them onto a canvas never taints it.
+    const svgData = new XMLSerializer().serializeToString(clone);
+    const url = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgData)))}`;
+
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = width * 2;
+            canvas.height = height * 2;
+            const ctx = canvas.getContext('2d')!;
+            ctx.scale(2, 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = () => resolve('');
+        img.src = url;
+    });
+}
+
 // Helper to convert images to Base64
 async function getBase64Image(imgUrl: string): Promise<string> {
     try {
@@ -32,7 +71,7 @@ async function getBase64Image(imgUrl: string): Promise<string> {
     }
 }
 
-export async function makeWeChatCompatible(html: string, themeId: string): Promise<string> {
+export async function makeWeChatCompatible(html: string, themeId: string, livePreview?: HTMLElement): Promise<string> {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
 
@@ -182,6 +221,26 @@ export async function makeWeChatCompatible(html: string, themeId: string): Promi
             next.parentNode?.removeChild(next);
         }
     });
+
+    // 5a. Replace mermaid-pending blocks with PNG images sourced from live DOM
+    if (livePreview) {
+        const liveMermaidBlocks = Array.from(livePreview.querySelectorAll('.mermaid-rendered'));
+        const pendingBlocks = Array.from(section.querySelectorAll('.mermaid-pending'));
+        await Promise.all(pendingBlocks.map(async (block, i) => {
+            const liveBlock = liveMermaidBlocks[i];
+            const svg = liveBlock?.querySelector('svg') as SVGElement | null;
+            if (!svg) return;
+            const pngUrl = await svgToPng(svg);
+            if (!pngUrl) return;
+            const img = doc.createElement('img');
+            img.setAttribute('src', pngUrl);
+            img.setAttribute('style', 'display: block; width: 100%; max-width: 100%; height: auto; margin: 24px auto; border-radius: 8px;');
+            block.replaceWith(img);
+        }));
+    } else {
+        // No live preview: remove pending placeholders gracefully
+        section.querySelectorAll('.mermaid-pending').forEach(b => b.remove());
+    }
 
     // 5. Convert all images to Base64 for safe WeChat pasting
     const imgs = Array.from(section.querySelectorAll('img'));

@@ -3,6 +3,7 @@ import { PenLine, Eye } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import { md, preprocessMarkdown, applyTheme } from './lib/markdown';
 import { markElementIndexes } from './lib/markdownIndexer';
+import { renderMermaidBlocks } from './lib/mermaidRenderer';
 import { makeWeChatCompatible, cleanInternalAttributes } from './lib/wechatCompat';
 import { THEMES } from './lib/themes';
 import { defaultContent } from './defaultContent';
@@ -55,6 +56,12 @@ export default function App() {
 
         setRenderedHtml(indexedHtml);
     }, [markdownInput, activeTheme]);
+
+    useEffect(() => {
+        if (previewRef.current) {
+            renderMermaidBlocks(previewRef.current);
+        }
+    }, [renderedHtml]);
 
     useEffect(() => {
         if (!scrollSyncEnabled) {
@@ -145,7 +152,7 @@ export default function App() {
         if (!previewRef.current) return;
         setIsCopying(true);
         try {
-            const finalHtmlForCopy = await makeWeChatCompatible(renderedHtml, activeTheme);
+            const finalHtmlForCopy = await makeWeChatCompatible(renderedHtml, activeTheme, previewRef.current ?? undefined);
 
             const blob = new Blob([finalHtmlForCopy], { type: 'text/html' });
             const textBlob = new Blob([previewRef.current.innerText], { type: 'text/plain' });
