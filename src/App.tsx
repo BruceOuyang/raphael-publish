@@ -20,6 +20,7 @@ export default function App() {
     const [markdownInput, setMarkdownInput] = useState<string>(defaultContent);
     const [renderedHtml, setRenderedHtml] = useState<string>('');
     const [activeTheme, setActiveTheme] = useState(THEMES[0].id);
+    const [displayHtml, setDisplayHtml] = useState<string>('');
     const [copied, setCopied] = useState(false);
     const [isCopying, setIsCopying] = useState(false);
     const [previewDevice, setPreviewDevice] = useState<'mobile' | 'tablet' | 'pc'>('pc');
@@ -55,12 +56,14 @@ export default function App() {
         const indexedHtml = markElementIndexes(styledHtml);
 
         setRenderedHtml(indexedHtml);
+        setDisplayHtml(indexedHtml);
     }, [markdownInput, activeTheme]);
 
     useEffect(() => {
-        if (previewRef.current) {
-            renderMermaidBlocks(previewRef.current);
-        }
+        if (!previewRef.current) return;
+        renderMermaidBlocks(previewRef.current).then(updated => {
+            if (updated !== null) setDisplayHtml(updated);
+        });
     }, [renderedHtml]);
 
     useEffect(() => {
@@ -330,7 +333,7 @@ export default function App() {
                 </div>
                 <div className={`${activePanel === 'preview' ? 'flex' : 'hidden'} md:flex flex-col overflow-hidden`}>
                     <PreviewPanel
-                        renderedHtml={renderedHtml}
+                        renderedHtml={displayHtml}
                         deviceWidthClass={deviceWidthClass()}
                         previewDevice={previewDevice}
                         previewRef={previewRef}

@@ -2,8 +2,10 @@ import mermaid from 'mermaid';
 
 mermaid.initialize({ startOnLoad: false, theme: 'default' });
 
-export async function renderMermaidBlocks(container: HTMLElement): Promise<void> {
+// Returns updated innerHTML after rendering, or null if no mermaid blocks found.
+export async function renderMermaidBlocks(container: HTMLElement): Promise<string | null> {
     const blocks = container.querySelectorAll<HTMLElement>('.mermaid-pending');
+    if (blocks.length === 0) return null;
     for (const block of Array.from(blocks)) {
         const source = decodeURIComponent(block.getAttribute('data-mermaid') || '');
         if (!source) continue;
@@ -22,4 +24,5 @@ export async function renderMermaidBlocks(container: HTMLElement): Promise<void>
             block.replaceWith(errDiv);
         }
     }
+    return container.innerHTML;
 }
